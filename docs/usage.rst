@@ -20,7 +20,7 @@ payload can look like:
     class ExamplePayload(Payload):
         class Implementation(Payload.Implementation):
             def __init__(self, meta, text):
-                assert isinstance(text, string)
+                assert isinstance(text, str)
                 super(ExamplePayload.Implementation, self).__init__(meta)
                 self._text = text
 
@@ -36,8 +36,8 @@ arguments to the *__init__* and making a function to access it. Like showed in t
 .. code-block:: python
 
     def __init__(self, meta, text, amount):
-        assert isinstance(text, string)
-        assert isinstance(amount, integer)
+        assert isinstance(text, str)
+        assert isinstance(amount, int)
         super(ExamplePayload.Implementation, self).__init__(meta)
         self._text = text
         self._amount = amount
@@ -107,9 +107,9 @@ binary string representation on the wire. It also allows you to convert between 
                 raise DropPacket("Invalid payload type")
 
             text, amount = payload
-            if not isinstance(text, string):
+            if not isinstance(text, str):
                 raise DropPacket("Invalid 'text' type")
-            if not isinstance(amount, integer):
+            if not isinstance(amount, int):
                 raise DropPacket("Invalid 'amount' type")
 
             return offset, placeholder.meta.payload.implement(text, amount)
@@ -178,7 +178,7 @@ If the payload has more properties then add these to the tuple. The decode funct
 
         text = payload
 
-        if not isinstance(text, string):
+        if not isinstance(text, str):
             raise DropPacket("Invalid 'text' type")
 
         return offset, placeholder.meta.payload.implement(text)
@@ -197,9 +197,9 @@ If the payload has more properties then add these to the tuple. The decode funct
             raise DropPacket("Invalid payload type")
 
         text, amount = payload
-        if not isinstance(text, string):
+        if not isinstance(text, str):
             raise DropPacket("Invalid 'text' type")
-        if not isinstance(amount, integer):
+        if not isinstance(amount, int):
             raise DropPacket("Invalid 'amount' type")
 
         return offset, placeholder.meta.payload.implement(text, amount)
@@ -271,7 +271,7 @@ A community in Dispersy defines the overlay used for the communication within th
             meta = self.get_meta_message(u"example")
             message = meta.impl(authentication=(self.my_member,),
                                 distribution=(self.claim_global_time(),),
-                                payload=((price, quantity, timeout),))
+                                payload=(text, amount,))
             self.dispersy.store_update_forward([message], store, update, forward)
 
         def on_example(self, messages):
