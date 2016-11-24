@@ -287,11 +287,18 @@ Each community must define a master member. This member is just a normal Dispers
 the community uniquely across the overlay. To create a master member, a public/private cryptography keypair has to be
 generated first, which has to be known to all nodes attempting to join.. This can be done with the *createkey.py* tool
 located under the *tool* package. To use the tool you must first copy it to the base directory of your porject.
-Using this tool a *curves* argument can be given to create a key to the strength of your liking. The recommended curve to use is *high*:
+Using this tool a *curves* argument must be given to create a key to the strength of your liking. The recommended curve to use is *high*:
 
-.. code-block:: python
+.. code-block:: console
 
-    python createkey.py curves=high
+    python createkey.py high
+
+You can also create multiple keys at once by passing the curve argument multiple times:
+
+.. code-block:: console
+
+    python createkey.py high low high
+
 
 When the key is generated, the pub 170 bits identifier should be copied and put in place of the *<public-key>* in the
 following template:
