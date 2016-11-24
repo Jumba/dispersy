@@ -16,6 +16,12 @@ You can add Dispersy to your program by adding it as a submodule of your git rep
 
    git submodule add git@github.com:Tribler/dispersy.git dispersy
 
+Then you need to initialize the submodules by running
+
+.. code-block:: python
+
+    git submodule update --init --recursive
+
 then you can start building your communities.
 
 Installing Dependencies

@@ -286,8 +286,8 @@ Master member
 Each community must define a master member. This member is just a normal Dispersy member that is only used to identify
 the community uniquely across the overlay. To create a master member, a public/private cryptography keypair has to be
 generated first, which has to be known to all nodes attempting to join.. This can be done with the *createkey.py* tool
-located under the *tool* package. Using this tool a *curves* argument can be given to create a key to the strength of
-your liking. The recommended curve to use is *high*:
+located under the *tool* package. To use the tool you must first copy it to the base directory of your porject.
+Using this tool a *curves* argument can be given to create a key to the strength of your liking. The recommended curve to use is *high*:
 
 .. code-block:: python
 
@@ -511,7 +511,7 @@ Currently there is one situation where disabling sequence numbers is required.  
 message will be signed by multiple members.  In this case the sequence number is claimed but may
 not be used (if the other members refuse to add their signature).  This causes a missing
 sequence message.  This in turn could be solved by creating a placeholder message, however, this
-is not currently, and my never be, implemented.
+is not currently, and may never be, implemented.
 
 LastSyncDistribution
 """"""""""""""""""""
@@ -569,14 +569,14 @@ To run Twisted in the main thread, just start Dispersy in your main thread
         reactor.exitCode = 0
         reactor.run()
 
-        dispersy = Dispersy(StandaloneEndpoint(port, '0.0.0.0'), unicode(<data_dir>), u'dispersy.db')
+        dispersy = Dispersy(StandaloneEndpoint(<port>, '0.0.0.0'), unicode(<data_dir>), u'dispersy.db')
         dispersy.statistics.enable_debug_statistics(True)
         dispersy.start(autoload_discovery=True)
 
-        my_member = self.get_new_member()
-        master_memeber = self.get_member(public_key=<master_key>)
+        my_member = dispersy.get_new_member()
+        master_member = dispersy.get_member(public_key=<master_key>)
 
-        community = <Community>.init_community(self, master_member, my_member)
+        community = <Community>.init_community(dispersy, master_member, my_member)
 
         exit(reactor.exitCode)
 
