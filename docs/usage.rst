@@ -566,26 +566,33 @@ having to take care of the reactor lifetime, log rotation, pid file and suchlike
 Run Twisted in the main thread
 ------------------------------
 
-To run Twisted in the main thread, just start Dispersy in your main thread
+Dispersy uses the Twisted reactor, which is an event driven networking framework. In the main function the function that starts dispersy is passed unto the reactor before start is called.
+
+A LoopingCall has been included to send a message every 1 second to members of the community with a timestamp. If you run this code on two seperate instances
+(if you use the same computer make sure to change the port and database name!) you will be able to see the messages if you include a print in the `ExampleCommunity.on_example` method.
 
 .. code-block:: python
 
     from twisted.internet import reactor
+    from twisted.internet.task import LoopingCall
+    import time
 
-    def main():
-        reactor.exitCode = 0
-        reactor.run()
-
-        dispersy = Dispersy(StandaloneEndpoint(<port>, '0.0.0.0'), unicode(<data_dir>), u'dispersy.db')
+    def start_dispersy():
+        dispersy = Dispersy(StandaloneEndpoint(<port>, '0.0.0.0'), unicode('.'), u'dispersy.db')
         dispersy.statistics.enable_debug_statistics(True)
         dispersy.start(autoload_discovery=True)
 
         my_member = dispersy.get_new_member()
         master_member = dispersy.get_member(public_key=<master_key>)
 
-        community = <Community>.init_community(dispersy, master_member, my_member)
+        community = ExampleCommunity.init_community(dispersy, master_member, my_member)
 
-        exit(reactor.exitCode)
+        LoopingCall(lambda:community.send_example("Time sent", int(time.time()))).start(1.0)
+
+
+    def main():
+        reactor.callWhenRunning(start_dispersy)
+        reactor.run()
 
     if __name__ == "__main__":
         main()
